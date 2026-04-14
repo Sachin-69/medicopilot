@@ -1,0 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  /* Superhuman Palette */
+  --mysteria-purple: #1b1938;
+  --lavender-glow: #cbb7fb;
+  --charcoal-ink: #292827;
+  --amethyst-link: #714cb6;
+  --warm-cream: #e9e5dd;
+  --parchment-border: #dcd7d3;
+  --pure-white: #ffffff;
+  
+  --text-primary-light: #292827;
+  --text-secondary-light: #6b6a68;
+  --text-primary-dark: rgba(255, 255, 255, 0.95);
+  --text-secondary-dark: rgba(255, 255, 255, 0.8);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica Neue, sans-serif;
+  background-color: var(--pure-white);
+  color: var(--text-primary-light);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
