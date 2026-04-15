@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from pydantic import BaseModel
-from app.services.orchestrator import run_pipeline
+from app.services.orchestrator import run_text_pipeline
 
 router = APIRouter()
 
@@ -9,4 +9,4 @@ class TextRequest(BaseModel):
 
 @router.post("/analyze-text")
 def analyze_text(request: TextRequest):
-    return run_pipeline(request.text)
+    return run_text_pipeline(request.text)

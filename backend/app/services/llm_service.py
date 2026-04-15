@@ -26,21 +26,36 @@ def call_llm(prompt: str) -> str:
         return response.choices[0].message.content
 
     except Exception as e:
-        # Smart mock based on prompt type
-        if "risk" in prompt.lower():
-            return """{
+        prompt_lower = prompt.lower()
+
+    # 🛡️ Insurance Agent
+    if "insurance" in prompt_lower or "policy" in prompt_lower:
+        return """{
+  "risk_category": "medium",
+  "recommended_policy": "premium",
+  "key_flags": ["hypertension", "high cholesterol"],
+  "notes": "Mock response: based on moderate health risks, a premium policy is recommended."
+}"""
+
+    # 📊 Report Agent
+    elif "medical report" in prompt_lower or "report:" in prompt_lower:
+        return """{
+  "summary": "Mock summary: patient shows signs of hypertension and elevated cholesterol.",
+  "abnormalities": ["high blood pressure", "high cholesterol"],
+  "concerns": ["cardiovascular risk"]
+}"""
+
+    # 🧠 Risk Agent
+    elif "risk" in prompt_lower:
+        return """{
   "risk_level": "low",
   "reason": "Mock response: no serious indicators",
   "urgency": "monitor"
 }"""
-        elif "report" in prompt.lower() or "summary" in prompt.lower():
-            return """{
-  "summary": "Mock summary: PDF extracted successfully but AI failed.",
-  "abnormalities": ["mock abnormality 1"],
-  "concerns": ["mock concern 1"]
-}"""
-        else:
-            return """{
+
+    # 🧬 Symptom Agent (default)
+    else:
+        return """{
   "conditions": ["sample condition"],
   "severity": "low",
   "advice": "Mock response: rest and hydration"

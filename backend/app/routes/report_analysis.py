@@ -1,35 +1,42 @@
 from fastapi import APIRouter, UploadFile, File, HTTPException
-from pydantic import BaseModel
-from typing import List
 from app.services.report_service import extract_text_from_pdf
-from app.agents.report_agent import analyze_report
+from app.services.orchestrator import run_report_pipeline
 
 router = APIRouter()
 
-class ReportResponse(BaseModel):
-    summary: str
-    abnormalities: List[str]
-    concerns: List[str]
 
-@router.post("/analyze-report", response_model=ReportResponse)
+@router.post("/analyze-report")
 async def analyze_report_endpoint(file: UploadFile = File(...)):
-    if not file.filename.lower().endswith(".pdf"):
-        raise HTTPException(status_code=400, detail="Only PDF files are supported.")
-    
-    file_bytes = await file.read()
-    
-    extracted_text = extract_text_from_pdf(file_bytes)
-    if not extracted_text:
-        return ReportResponse(
-            summary="Could not extract text from the provided PDF. It might be empty or scanned.",
-            abnormalities=[],
-            concerns=[]
+    try:
+        # Validate file type
+        if not file.filename.endswith(".pdf"):
+            raise HTTPException(status_code=400, detail="Only PDF files are allowed.")
+
+        # Read file bytes
+        contents = await file.read()
+
+        if not contents:
+            raise HTTPException(status_code=400, detail="Uploaded file is empty.")
+
+        # Extract text from PDF
+        extracted_text = extract_text_from_pdf(contents)
+
+        if not extracted_text.strip():
+            raise HTTPException(
+                status_code=400,
+                detail="Could not extract text from PDF. It may be a scanned document."
+            )
+
+        # Run full multi-agent pipeline
+        result = run_report_pipeline(extracted_text)
+
+        return result
+
+    except HTTPException as http_err:
+        raise http_err
+
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Internal server error: {str(e)}"
         )
-    
-    result = analyze_report(extracted_text)
-    
-    return ReportResponse(
-        summary=result.get("summary", "Analysis fallback: No summary available"),
-        abnormalities=result.get("abnormalities", []),
-        concerns=result.get("concerns", [])
-    )
