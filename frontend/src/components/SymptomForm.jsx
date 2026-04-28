@@ -53,7 +53,8 @@ function SymptomForm({ setResults }) {
         </div>
         
         <button type="submit" className="btn" disabled={loading || !text.trim()}>
-          {loading ? 'Analyzing...' : 'Analyze Symptoms'}
+          {loading && <span className="spinner"></span>}
+          {loading ? 'Analyzing symptoms...' : 'Analyze Symptoms'}
         </button>
       </form>
     </div>

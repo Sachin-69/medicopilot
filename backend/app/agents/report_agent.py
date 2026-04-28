@@ -11,7 +11,8 @@ def analyze_report(text: str) -> dict:
         "- Read the following medical report text.\n"
         "- Summarize the report simply.\n"
         "- List any abnormal findings.\n"
-        "- List potential health concerns based on the findings.\n\n"
+        "- List potential health concerns based on the findings.\n"
+        "- Identify the PRIMARY DRIVERS of risk (top 1–3 most important factors).\n\n"
         "STRICT RULES:\n"
         "- Do NOT provide medical diagnosis.\n"
         "- Return ONLY valid JSON (no extra text or markdown formatting).\n\n"
@@ -20,7 +21,8 @@ def analyze_report(text: str) -> dict:
         "{\n"
         '  "summary": "simple explanation of report",\n'
         '  "abnormalities": ["list of abnormal findings"],\n'
-        '  "concerns": ["potential health concerns"]\n'
+        '  "concerns": ["potential health concerns"],\n'
+        '  "primary drivers": ["main factors driving risk"]\n'
         "}\n"
     )
 
@@ -32,5 +34,6 @@ def analyze_report(text: str) -> dict:
         return {
             "summary": f"Failed to analyze report: {str(e)}",
             "abnormalities": [],
-            "concerns": []
+            "concerns": [],
+            "primary drivers":[]
         }

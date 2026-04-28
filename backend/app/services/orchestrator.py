@@ -15,9 +15,48 @@ def run_text_pipeline(user_input: str):
 }
 
 
+def calculate_severity(abnormalities: list) -> str:
+    if not abnormalities:
+        return "low"
+
+    text = " ".join(abnormalities).lower()
+
+    # 🔴 High-risk indicators
+    high_risk_keywords = [
+        "high blood pressure",
+        "chest pain",
+        "very high",
+        "critical",
+        "severe"
+    ]
+
+    # 🟡 Medium-risk indicators
+    medium_risk_keywords = [
+        "elevated",
+        "high cholesterol",
+        "low hemoglobin",
+        "prediabetes"
+    ]
+
+    # 🔍 Check for high-risk first
+    if any(keyword in text for keyword in high_risk_keywords):
+        return "high"
+
+    # Then medium
+    if any(keyword in text for keyword in medium_risk_keywords):
+        return "medium"
+
+    return "low"
+
 def run_report_pipeline(report_text: str):
     report_result = analyze_report(report_text)
-    risk_result = analyze_risk(report_result)
+    abnormalities = report_result.get("abnormalities", [])
+    severity = calculate_severity(abnormalities)
+
+    risk_result = analyze_risk({
+        "conditions": report_result.get("concerns", []),
+        "severity": severity
+    })
     insurance_result = recommend_insurance(report_result, risk_result)
 
 

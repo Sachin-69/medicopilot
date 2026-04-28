@@ -20,6 +20,10 @@ function App() {
       </div>
 
       <ResultCards results={results} />
+
+      <div style={{ marginTop: '40px', padding: '20px', textAlign: 'center', color: '#aaa', fontSize: '0.85rem', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+        This system provides AI-assisted insights and is not a substitute for professional medical or financial advice.
+      </div>
     </div>
   );
 }

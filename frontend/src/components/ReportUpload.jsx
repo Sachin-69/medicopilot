@@ -71,7 +71,8 @@ function ReportUpload({ setResults }) {
         </div>
         
         <button type="submit" className="btn" disabled={loading || !file}>
-          {loading ? 'Uploading & Analyzing...' : 'Upload & Analyze'}
+          {loading && <span className="spinner"></span>}
+          {loading ? 'Analyzing report...' : 'Upload & Analyze'}
         </button>
       </form>
     </div>
