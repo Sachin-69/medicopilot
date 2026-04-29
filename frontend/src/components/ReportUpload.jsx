@@ -30,7 +30,7 @@ function ReportUpload({ setResults }) {
     formData.append('file', file);
 
     try {
-      const response = await fetch('http://localhost:8000/analyze-report', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/analyze-report`, {
         method: 'POST',
         body: formData,
       });
